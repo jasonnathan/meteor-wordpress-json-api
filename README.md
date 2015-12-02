@@ -1,9 +1,11 @@
-meteor-wordpress-dev-api
-=========================
-A quick, dirty fork of Ronaldo Barbachano's [redcap3000:wordpress-json-api](https://atmospherejs.com/redcap3000/wordpress-json-api) specifically for WordPress.com's API
+##meteor-wordpress-dev-api##
+============================
+A quick fork of Ronaldo Barbachano's [redcap3000:wordpress-json-api](https://atmospherejs.com/redcap3000/wordpress-json-api) specifically for WordPress.com's API
 
 Interacts with the [Wordpress.com Developer API](https://developer.wordpress.com/docs/api/) to retrieve [Wordpress.com](http://wordpress.com) data.
 
+##Usage##
+============================
 Comes with very bare bones templates and sends back all the data/fields to all publications. Includes a basic template with single post view functionality (as well as a way to go back.)
 ###Quickstart
 
