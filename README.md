@@ -1,8 +1,8 @@
-meteor-wordpress-json-api
+meteor-wordpress-dev-api
 =========================
-**Ronaldo Barbachano**
+A quick, dirty fork of Ronaldo Barbachano's [redcap3000:wordpress-json-api](https://atmospherejs.com/redcap3000/wordpress-json-api) specifically for WordPress.com's API
 
-Interacts with the [Wordpress JSON API plugin](https://wordpress.org/plugins/json-api/) to retrieve [Wordpress](http://wordpress.org) data.
+Interacts with the [Wordpress.com Developer API](https://developer.wordpress.com/docs/api/) to retrieve [Wordpress.com](http://wordpress.com) data.
 
 Comes with very bare bones templates and sends back all the data/fields to all publications. Includes a basic template with single post view functionality (as well as a way to go back.)
 ###Quickstart
@@ -25,7 +25,8 @@ Comes with very bare bones templates and sends back all the data/fields to all p
 
 ```
 if (Meteor.isClient) {
-  Session.setDefault("wp-json-api-url","http://www.mywordpresssite.com/?json=get_posts&count=10");
+  // Internally, it constructs the URL by prefixing https://public-api.wordpress.com/rest/v1.1/sites/
+  Session.setDefault("wp-json-api-url","mysite.wordpress.com/posts");
 }
 ```
 Changing the Session variable ```wp-json-api-url``` will update the subscription with the new data (if applicable.)
@@ -34,7 +35,7 @@ Changing the Session variable ```wp-json-api-url``` will update the subscription
 
 
 ```
-Meteor.subscribe("wordpress","http://www.mywordpresssite.com/?json=get_posts&count=10");
+Meteor.subscribe("wordpress","mysite.wordpress.com/posts/7/replies");
 ```
 
 
@@ -60,29 +61,33 @@ Wordpress.find();
 Publications
 ===============
 ```
-Meteor.publish("wordpress",function(site,directive))
+Meteor.publish("wordpress",function(site, queryHash))
 ```
-The main publication where site is the wordpress site (with the plugin installed) including slash. If no directive is provided it will default to the latest posts response (?json). Your plugin installation may support the 'pretty urls' or not. Otherwise provide it with the appropriate query string for the data you'd like to retrieve. 
+The main publication where `site` is the wordpress.com siteID or url including the primary content to retrieve
+`mysite.wordpress.com/posts` and `queryHash` is an object of query parameters to include. 
+@see Methods below for an example
 
 ```
-Meteor.publish("wpPost",function(id){})
+Meteor.publish("wpPost",function(slug){})
 ```
 
 This may not play nice with use of the "main" wordpress publication. So its recommended using one or the other.
 ###Methods
 
 ```
-Meteor.call("callWordpress","http://mysite.com/");
-Meteor.call("callWordpress","http://mysite.com/","json=get_post&post_id=47");
+Meteor.call("callWordpress","mysite.wordpress.com");
+Meteor.call("callWordpress","mysite.wordpress.com/posts",{
+    number: 10, //The number of posts to return. Limit: 100. Default: 20.
+    page: 1 //Return the Nth 1-indexed page of posts. Takes precedence over the offset parameter.
+});
 ```
-This is like the publication except it returns the raw response (as an object). Check [this document](http://wordpress.org/plugins/json-api/other_notes/) for more on how to query the api. For now it **appends the question mark(?).** 
+This is like the publication except it returns the raw response (as an object). Check [WordPress.com's API docs](https://developer.wordpress.com/docs/api/) for more on how to query the api.** 
 
 ####Handlebar helper
 
-**wpPost** - use this helper to fetch the data from the collection wordpress, if provided with an ID should only return a single post of that ID. **{{wpPost _id}}**
+**wpPost** - use this helper to fetch the data from the collection wordpress, if provided with an ID should only return a single post of that ID. **{{wpPost slug}}**
 
 
 ###Extra notes
-The wordpress ID is used as the mongo _id.
-For now posts with **matching ID's aren't upserted**.
+The wordpress slug is used as the mongo _id.
 Subscriptions return all fields to the client.
