@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-    Session.setDefault('wp-json-api-url', false);
+    typeof Session !== "undefined" && Session.setDefault('wp-site-id', false);
 });
 
 Handlebars.registerHelper("wpPosts", function (id) {
@@ -16,8 +16,8 @@ Template.wordpress_posts.onCreated(function () {
     // optional if one choses to use included templates.
     var self = this;
     self.autorun(function () {
-        if (!Session.equals('wp-json-api-url', false)) {
-            self.subscribe("wordpress", Session.get("wp-json-api-url"));
+        if (!Session.equals('wp-site-id', false)) {
+            self.subscribe("wordpress", Session.get("wp-site-id"));
         }
     });
 });

@@ -35,12 +35,15 @@ Meteor.methods({
 
 Meteor.publish("wordpress", function (site, directive) {
 
+    Wordpress.remove({});
     site = site ? "https://public-api.wordpress.com/rest/v1.1/sites/" + site : undefined;
     queryHash = queryHash || {};
 
 
     if (!site)
         return false;
+    
+    console.log(site)
 
     var q = HTTP.get(site, {
         headers: {
@@ -53,7 +56,8 @@ Meteor.publish("wordpress", function (site, directive) {
         var respJson = JSON.parse(q.content);
         if (respJson && typeof respJson.posts != "undefined") {
             respJson.posts.filter(function (arr) {
-                Wordpress[ !!Wordpress.findOne(arr.slug) ? 'upsert' : 'insert' ](arr)
+                arr._id = arr.slug;
+                var p = Wordpress.update({_id: arr._id}, {$set:arr}, {upsert:true});
             });
             return Wordpress.find();
         } else {

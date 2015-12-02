@@ -21,7 +21,7 @@ Package.on_use(function(api){
 });
 
 Package.onTest(function(api) {
-  api.use('tinytest');
-  api.use('jasonnathan:wordpress-json-api');
-  api.addFiles('wordpress-json-api-tests.js');
+  api.use(['tinytest', 'session', 'templating', 'mongo', 'underscore', 'tracker']);
+  api.use('jasonnathan:wordpress-dev-api', ['client', 'server']);
+  api.addFiles('wordpress-api-tests.js', ['client']);
 });
