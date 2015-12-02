@@ -1,13 +1,11 @@
 ##meteor-wordpress-dev-api##
-============================
 A quick fork of Ronaldo Barbachano's [redcap3000:wordpress-json-api](https://atmospherejs.com/redcap3000/wordpress-json-api) specifically for WordPress.com's API
 
-Interacts with the [Wordpress.com Developer API](https://developer.wordpress.com/docs/api/) to retrieve [Wordpress.com](http://wordpress.com) data.
+Interacts with the [Wordpress.com Developer API](https://developer.wordpress.com/docs/api/) to retrieve [Wordpress.com](http://wordpress.com) data. There are some basic tests created as well
 
 ##Usage##
-============================
 Comes with very bare bones templates and sends back all the data/fields to all publications. Includes a basic template with single post view functionality (as well as a way to go back.)
-###Quickstart
+Quickstart
 
 **HTML Template File that references built in template 'wordpress_posts'**
 
@@ -27,11 +25,11 @@ Comes with very bare bones templates and sends back all the data/fields to all p
 
 ```
 if (Meteor.isClient) {
-  // Internally, it constructs the URL by prefixing https://public-api.wordpress.com/rest/v1.1/sites/
+  // Constructs URL by prefixing https://public-api.wordpress.com/rest/v1.1/sites/
   Session.setDefault("wp-json-api-url","mysite.wordpress.com/posts");
 }
 ```
-Changing the Session variable ```wp-json-api-url``` will update the subscription with the new data (if applicable.)
+Changing the Session variable ```wp-site-id``` will update the subscription with the new data (if applicable.)
 
 ###Bring your own template
 
