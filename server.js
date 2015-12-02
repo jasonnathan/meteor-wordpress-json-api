@@ -33,9 +33,9 @@ Meteor.methods({
     }
 });
 
-Meteor.publish("wordpress", function (site, directive) {
+Meteor.publish("wordpress", function (site, queryHash) {
 
-    Wordpress.remove({});
+    //Wordpress.remove({});
     site = site ? "https://public-api.wordpress.com/rest/v1.1/sites/" + site : undefined;
     queryHash = queryHash || {};
 
